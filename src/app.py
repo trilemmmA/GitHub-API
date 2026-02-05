@@ -58,7 +58,8 @@ class App:
     [bold cyan]1 - Load Users[/]
     [bold cyan]2 - Search[/]
     [bold cyan]3 - Show result[/]
-    [bold cyan]4 - Exit[/]
+    [bold cyan]4 - Load previous search[/]
+    [bold cyan]5 - Exit[/]
     """
         self.console.print(
            Panel(Align.center(text), title="GitHub Analyzer", border_style="cyan") 
@@ -92,6 +93,16 @@ class App:
                 self.show()
             
             elif choice == "4":
+                storage_items = self.storage.load()
+                
+                if not storage_items:
+                    self.console.print("Storage is empty", style="bold green", justify="center")
+                    
+                else:
+                    self.last_result = storage_items
+                    self.show()
+            
+            elif choice == "5":
                 break
             
             else:
