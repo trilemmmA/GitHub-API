@@ -18,7 +18,7 @@ class GitHubUser:
     
     @property
     def profile(self):
-        return f"https://api.github.com/{self.login}"
+        return f"https://github.com/{self.login}"
     
     @classmethod
     def from_api(cls, raw: dict):                

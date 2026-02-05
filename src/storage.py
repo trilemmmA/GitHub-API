@@ -8,11 +8,8 @@ class Storage:
     
     @call_log    
     def save(self, data):
-        prepared = []
-        
-        for user in data:
-            prepared.append(user.to_dict())
-        
+        prepared = [user.to_dict() for user in data]
+                        
         try:
             with open(self.filename, "w", encoding='utf-8') as f:
                 json.dump(prepared, f, ensure_ascii=False, indent=4)
@@ -25,13 +22,8 @@ class Storage:
         try:
             with open(self.filename, "r", encoding='utf-8') as f:
                 data = json.load(f)
-                
-            users = []
-            
-            for raw in data:
-                users.append(GitHubUser.from_api(raw))
-                
-            return users            
+              
+            return [GitHubUser.from_api(raw) for raw in data]          
         
         except Exception as e:
             print(f"Load failed with: {e}")
