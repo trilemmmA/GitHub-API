@@ -31,3 +31,17 @@ class GitHubUser:
     
     def searchable(self):
         return [self.user_id, self.login, self.url, self.score]
+
+    def enrich_w_details(self, client):                       
+        try:
+            detail_url = f"http://api.github.com/users/{self.login}"
+            resp = client.session.get(detail_url)
+            if resp.ok:
+                data = resp.json()
+                followers = data.get("followers", 0)
+                repos = data.get("public_repos", 0)
+                self.score = followers + repos / 2
+                        
+        except:
+            self.score = 0
+            

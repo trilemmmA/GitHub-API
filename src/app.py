@@ -21,10 +21,12 @@ class App:
         self.analyzer = Analyzer(self.users)
             
     def search(self, pattern):
+        result = list(self.analyzer.search(pattern))
         
-        result = self.analyzer.search(pattern)
-        self.last_result = list(result)
+        for details in result:
+            details.enrich_w_details(self.client)
         
+        self.last_result = sorted(result, key=lambda x: x.score or 0, reverse=True)
         self.storage.save(self.last_result)    
     
     def show(self):
