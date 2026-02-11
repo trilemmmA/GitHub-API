@@ -1,4 +1,5 @@
 from analyzer import Analyzer
+from functools import lru_cache
 
 from rich.console import Console
 from rich.table import Table
@@ -14,6 +15,7 @@ class App:
         self.analyzer = Analyzer(self.users)
         self.console = Console()
     
+    @lru_cache(maxsize=50)
     def load(self, limit):
         raw = self.client.fetch_users(limit)        
         self.users = list(self.analyzer.build_users(raw))
