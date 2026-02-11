@@ -15,10 +15,13 @@ class App:
         self.analyzer = Analyzer(self.users)
         self.console = Console()
     
-    @lru_cache(maxsize=50)
-    def load(self, limit):
-        raw = self.client.fetch_users(limit)        
-        self.users = list(self.analyzer.build_users(raw))
+    @lru_cache(maxsize=200)
+    def fetch_users_cached(self, limit):
+        raw = self.client.fetch_users(limit) 
+        return list(self.analyzer.build_users(raw))
+    
+    def load(self, limit):        
+        self.users = self.fetch_users_cached(limit)
         
         self.analyzer = Analyzer(self.users)
             
